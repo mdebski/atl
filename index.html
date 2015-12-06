@@ -1,0 +1,94 @@
+<html>
+<head>
+<script src="lib/svg.min.js"></script>
+<script src="lib/svg-pan-zoom.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+var atl = {};
+atl.max_p = 250;
+atl.main = function() {
+ atl.initSvg();
+ atl.primes = atl.genPrimes(atl.max_p);
+ atl.makePoints();
+ atl.draw();
+ atl.initPan();
+}
+
+atl.Point = function(p1, p2) {
+ this.p1 = p1;
+ this.p2 = p2;
+ this.n = p1 * p2;
+ return this;
+}
+
+atl.Point.prototype.compare = function(pa, pb) {
+ // ordering in Z.
+ return pa.n - pb.n;
+}
+
+atl.genPrimes = function(n) {
+ var array = [], upperLimit = Math.sqrt(n), output = [];
+
+ for (var i = 0; i < n; i++) array.push(true);
+ for (var i = 2; i <= upperLimit; i++)
+  if (array[i])
+   for (var j = i * i; j < n; j += i) array[j] = false;
+
+ for (var i = 2; i < n; i++) if(array[i]) output.push(i);
+
+ return output;
+};
+
+atl.initSvg = function() {
+ atl.svg = SVG('atl').size('100%', '100%');
+ atl.svg_node = atl.svg.node;
+ atl.svg.viewbox(0, 0, atl.max_p, atl.max_p);
+ atl.svg = atl.svg.group();
+ atl.svg.scale(1, -1).move(0, -atl.max_p);
+}
+
+atl.makePoints = function() {
+ atl.points = [];
+ atl.primes.forEach(function(p1) {
+  atl.primes.forEach(function(p2) {
+   if(p1 <= p2) atl.points.push(new atl.Point(p1, p2));
+  });
+ });
+ atl.points.sort(atl.Point.prototype.compare);
+}
+
+atl.draw = function() {
+ last_p = null;
+ lines = atl.svg.group();
+ circs = atl.svg.group();
+ atl.points.forEach(function(p) {
+  circs.circle(0.6).attr({'cx': p.p1, 'cy': p.p2})
+   .fill({'color': 'cornflowerblue'})
+   .stroke('none');
+   // .stroke({'width': 0.1, 'color': 'cornflowerblue'});
+  if(last_p) {
+   lines.line(last_p.p1, last_p.p2, p.p1, p.p2).stroke({
+    'width': 0.15,
+    'color': '#bbbbbb'
+   });
+  }
+  last_p = p;
+ });
+}
+
+atl.initPan = function() {
+ atl.panZoom = svgPanZoom(atl.svg_node);
+}
+
+</script>
+</head>
+
+<body onload="atl.main()">
+ <div id="atl"></div>
+</body>
+
+</html>
