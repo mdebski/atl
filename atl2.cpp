@@ -4,41 +4,78 @@
 #include<cmath>
 #include<functional>
 #include<fstream>
+#include<map>
+#include<set>
+#include<iostream>
+#include<limits>
 
 using namespace std;
 
+typedef unsigned NUM;
+typedef double FLOAT;
+const FLOAT MAX_DIVS = 30;
+
+template<typename T> void dump_gammas(vector<T>& v, FLOAT n) {
+  cout << "N: " << n << ";\t";
+  T s = accumulate(v.begin(), v.end(), 0) / n;
+  cout << "SUM: " << fixed << s << ";\t";
+  for(int i=0;i<v.size();++i) {
+    cout << fixed << v[i]/n;
+    if(i != v.size() - 1)
+      cout << ", ";
+  }
+  cout << endl;
+}
+
+
 int main(int argc, char* argv[]) {
+  cout.precision(std::numeric_limits<FLOAT>::max_digits10);
   if(argc < 2) {
     printf("Usage: %s n primes_file_name\n", argv[0]);
   }
 
-  typedef unsigned NUM;
   NUM n = stoi(argv[1]);
-  double sum;
-  double sqr;
+
+  std::set<NUM> breaks;
+  NUM c = 1000;
+  while(c < n) {
+    breaks.insert(c);
+    c*=10;
+  }
+  for(int i=1;i<10;++i) {
+    breaks.insert((n*i)/10);
+  }
+  breaks.insert(n);
 
   vector<NUM> largest_divisors;
+  map<NUM, FLOAT> prime_logs;
   largest_divisors.resize(n+1);
 
-  for(int div_num=1;div_num<=1;++div_num) {
+  ifstream file(argv[2], ios::binary);
+  file.read(reinterpret_cast<char*>(largest_divisors.data()),
+            largest_divisors.size() * sizeof(NUM));
+  file.close();
 
-    ifstream file(argv[2], ios::binary);
-    file.read(reinterpret_cast<char*>(largest_divisors.data()),
-              largest_divisors.size() * sizeof(NUM));
-    file.close();
-
-    sum = 0; sqr = 0;
-
-    for(int i=2;i<=n;++i) {
-      NUM c = i;
-      for(int j=1;j<div_num;++j) {
-        c /= largest_divisors[c];
-      }
-      double l = log(largest_divisors[c]) / log(i);
-      sum += l / n;
-      sqr += l*l / n;
+  for(NUM i=1;i<=n;++i) {
+    if(largest_divisors[i] == i) {
+      prime_logs[i] = log(i);
     }
-    printf("%d %lf %lf\n", div_num, sum, sqr);
+  }
+
+  vector<FLOAT> gamma;
+  gamma.resize(MAX_DIVS, 0.0);
+
+  for(NUM i=2;i<=n;++i) {
+    NUM c = i;
+
+    for(int j=0;j<MAX_DIVS;++j) {
+      FLOAT l = prime_logs[largest_divisors[c]] / log(i);
+      gamma[j] += l;
+      c /= largest_divisors[c];
+    }
+
+    if(breaks.find(i) != breaks.end())
+      dump_gammas(gamma, i);
   }
 
 }
