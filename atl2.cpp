@@ -67,9 +67,10 @@ int main(int argc, char* argv[]) {
 
   for(NUM i=2;i<=n;++i) {
     NUM c = i;
+    FLOAT li = log(i);
 
     for(int j=0;j<MAX_DIVS;++j) {
-      FLOAT l = prime_logs[largest_divisors[c]] / log(i);
+      FLOAT l = prime_logs[largest_divisors[c]] / li;
       gamma[j] += l;
       c /= largest_divisors[c];
     }
