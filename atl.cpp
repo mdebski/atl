@@ -3,6 +3,7 @@
 #include<algorithm>
 #include<cmath>
 #include<functional>
+#include<fstream>
 
 using namespace std;
 
@@ -118,10 +119,33 @@ public:
  }
 };
 
-int main() {
-  unsigned n;
-  scanf("%u", &n);
-  Sieve<unsigned> s(n);
+template<typename NUM> void get_largest_divisors(NUM limit, Sieve<NUM> s, vector<NUM> * out) {
+  out->resize(limit+1, 1);
 
-  printf("%d\n", s.get_div(17341*33331));
+  for(NUM i=2;i<=limit;++i) {
+    NUM div = s.get_div(i);
+    if(div == 1)
+      (*out)[i] = i;
+    else
+      (*out)[i] = std::max(div, out->at(i/div));
+  }
+}
+
+int main(int argc, char* argv[]) {
+  if(argc < 2) {
+    printf("Usage: %s n output_file_name\n", argv[0]);
+  }
+
+  typedef unsigned NUM;
+  NUM n = stoi(argv[1]);
+
+  Sieve<NUM> s(n);
+  vector<NUM> largest_divisors;
+
+  get_largest_divisors<NUM>(n, s, &largest_divisors);
+
+  ofstream file(argv[2], ios::binary);
+  file.write(reinterpret_cast<char*>(largest_divisors.data()),
+             largest_divisors.size() * sizeof(NUM));
+  file.close();
 }
