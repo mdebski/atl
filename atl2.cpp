@@ -73,6 +73,7 @@ int main(int argc, char* argv[]) {
       FLOAT l = prime_logs[largest_divisors[c]] / li;
       gamma[j] += l;
       c /= largest_divisors[c];
+      if(c == 1) break;
     }
 
     if(breaks.find(i) != breaks.end())
