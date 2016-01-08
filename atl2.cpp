@@ -16,9 +16,8 @@ typedef double FLOAT;
 const FLOAT MAX_DIVS = 30;
 
 template<typename T> void dump_gammas(vector<T>& v, FLOAT n) {
-  cout << "N: " << n << ";\t";
   T s = accumulate(v.begin(), v.end(), 0) / n;
-  cout << "SUM: " << fixed << s << ";\t";
+  cout << n << ", " << s << ", ";
   for(int i=0;i<v.size();++i) {
     cout << fixed << v[i]/n;
     if(i != v.size() - 1)
