@@ -4,10 +4,10 @@
 #include<cmath>
 #include<functional>
 #include<fstream>
-#include<map>
 #include<set>
 #include<iostream>
 #include<limits>
+#include<boost/container/flat_map.hpp>
 
 using namespace std;
 
@@ -48,7 +48,7 @@ int main(int argc, char* argv[]) {
   breaks.insert(n);
 
   vector<NUM> largest_divisors;
-  map<NUM, FLOAT> prime_logs;
+  boost::container::flat_map<NUM, FLOAT> prime_logs;
   largest_divisors.resize(n+1);
 
   ifstream file(argv[2], ios::binary);
