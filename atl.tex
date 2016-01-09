@@ -1,0 +1,113 @@
+\documentclass{report}
+\usepackage[MeX]{polski}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{latexsym}
+\usepackage{wasysym}
+\usepackage{graphicx}
+\usepackage[hmarginratio=1:1]{geometry}
+\graphicspath{{.}}
+
+%\addtolength{\voffset}{-2cm}
+%\addtolength{\textheight}{+4cm}
+%\addtolength{\hoffset}{-3.5cm}
+%\addtolength{\textwidth}{+7cm}
+
+\newcommand{\bc}{\begin{cases}}
+\newcommand{\ec}{\end{cases}}
+\newcommand{\cc}{^{\circ}}
+\newcommand{\sq}{\begin{flushright}$\square$\end{flushright}}
+\renewcommand\Re{\operatorname{\mathfrak{Re}}}
+\renewcommand\Im{\operatorname{\mathfrak{Im}}}
+\newcommand{\imp}{\Rightarrow}
+\newcommand{\pair}[1]{\langle #1 \rangle}
+\renewcommand{\epsilon}{\varepsilon}
+\newcommand{\eps}{\epsilon}
+\newcommand{\I}{\imath}
+\newcommand{\fl}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\clim}{\lim_{n \to \infty}}
+\newcommand{\csum}{\sum_{n=1}^{\infty}}
+\newcommand{\Zp}[1]{\mathbb{Z}_{#1}}
+\newcommand{\Zi}{\mathbb{Z}[\I]}
+\newcommand{\Ze}{\mathbb{Z}[\omega]}
+\newcommand{\RR}{[-\infty; +\infty]}
+\newcommand{\lin}{\mathrm{lin}}
+\newcommand{\sgn}{\mathrm{sgn}}
+\newcommand{\tr}{\mathrm{tr}}
+\newcommand{\grad}{\mathrm{grad}}
+\newcommand{\vol}{\mathrm{vol\,}}
+\newcommand{\graph}{\mathrm{graph}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\Mst}[1]{M(#1)^{\mathrm{st}}_{\mathrm{st}}}
+\newcommand{\st}{\mathrm{st}}
+\newcommand{\ppp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pis}[1]{\mathcal{#1}}
+\newcommand{\set}[1]{\{#1\}}
+\renewcommand{\phi}{\varphi}
+%\newcommand{\norm}[1]{\left|\left|#1\right|\right|}
+\newcommand{\norm}[1]{N(#1)}
+\newcommand{\abs}[1]{\left|#1\right|}
+
+\def\thesection {\arabic{section}.}
+\def\thesubsection {\alph{subsection})}
+\def\thesubsubsection {\arabic{subsubsection}.}
+
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{
+ \hskip -\arraycolsep
+ \let\@ifnextchar\new@ifnextchar
+ \array{#1}}
+\makeatother
+
+\newcommand{\muz}[1]{\mu^{*}\left(#1\right)}
+\newcommand{\leb}[1]{\lambda^{*}\left(#1\right)}
+\newcommand{\cnt}{\mathrm{count}}
+
+\renewcommand{\d}{\partial}
+
+\title{Obliczeniowe badanie oczekiwanego zachowania \\ dzielników pierwszych \\ liczb naturalnych}
+\author{Maciej Dębski}
+
+\begin{document}
+
+\maketitle
+
+\chapter*{Podstawy teoretyczne}
+Jak wiadomo z podstaw teorii liczb, każdą liczbę naturalną $n \in \N$ można przedstawić jako
+$$ n = p_1 \cdot p_2 \cdot p_3 \cdot \ldots \cdot p_k, \quad p_i \in \P. $$
+Będziemy tutaj rozpatrywać podobne przedstawienie, tylko uporządkowane według rozmiaru $p_i$ i uzupełnione jedynkami do stałej długości $K$:
+$$ n = a_1 \cdot a_2 \cdot \ldots \cdot a_K, \quad a_i \in \P \cup \set{1}, a_1 \geq a_2 \geq \ldots \geq a_K. $$
+Takie przedstawienie zawsze istnieje dla odpowiednio dużego $K$, np. dla $K > \log_2(n)$. \\
+
+Będę badał średni rozmiar dzielników $a_i$ w porównaniu z $n$. W szczególności ciekawe wyniki daje badanie ich logarytmów o podstawie n. Możemy zapisać
+$$ n = n^{\gamma_1} \cdot \ldots n^{\gamma_K}, \quad \gamma_i = \log_n{a_i}. $$
+Oczywiście, po zlogarytmowaniu stronami otrzymujemy
+\begin{equation} \label{sum} 1 = \gamma_1 + \ldots + \gamma_K. \end{equation} \\
+
+Zdefiniujmy teraz badane średnie. Niech $\gamma_i(n), i \in \set{1, \ldots, K}$ oznacza odpowiednią wartość z rozkładu $n$, jak powyżej. Dla ustalonego $N$, przyjmijmy
+$$ \bar{\gamma}_i = \frac{1}{N} \sum_{n=1}^{N} \gamma_i(n). $$
+Obliczenia wskazują, że dla każdego $i$, ciąg $\bar{\gamma}_i$ jest zbieżny dla $N \to \infty$. Ponadto, suma tych ciągów wydaje się szybko zbiegać do $1$,
+co jest odpowiednikiem równości (\ref{sum}) dla średnych.
+
+\chapter*{Metoda obliczeń}
+
+Obliczenia przeprowadziłem dla $N = 10^9$ i $K = 30$, na pojedynczym komputerze z procesorem i7-3537U (2.00GHz) i 10GB pamięci RAM.
+Program napisałem w C++, a następnie mocno zoptymalizowałem i sprofilowałem - początkowe wersje działały kilka rzędów wielkości wolniej.
+Ostateczne obliczenia trwały poniżej 10 minut. Kod programu oraz dane wynikowe jest dostępny w repozytorium projektu:
+
+\chapter*{Wyniki}
+
+\end{document}
