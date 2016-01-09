@@ -106,7 +106,32 @@ co jest odpowiednikiem równości (\ref{sum}) dla średnych.
 
 Obliczenia przeprowadziłem dla $N = 10^9$ i $K = 30$, na pojedynczym komputerze z procesorem i7-3537U (2.00GHz) i 10GB pamięci RAM.
 Program napisałem w C++, a następnie mocno zoptymalizowałem i sprofilowałem - początkowe wersje działały kilka rzędów wielkości wolniej.
-Ostateczne obliczenia trwały poniżej 10 minut. Kod programu oraz dane wynikowe jest dostępny w repozytorium projektu:
+Ostateczne obliczenia trwały poniżej 10 minut. Kod programu oraz dane wynikowe jest dostępny w repozytorium projektu: https://github.com/mdebski/atl
+
+\section*{Algorytm}
+Jednym z głównych problemów przy pisaniu programu było kontrolowanie zużycia pamięci. Tablica liczb (uint32\_t) wielkości $N = 10^9$ zajmuje $4GB$ pamięci, i dwie takie tablice już się nie mieściły, przy standardowym zużyciu pamięci przez system.
+Stąd na przykład niemożliwe było zapisanie pełnego rozkładu na czynniki pierwsze wszystkich rozpatrywanych liczb. \\
+
+Problem podzieliłem na dwie części. W pierwszej za pomocą sita znajdowałem pewien dzielnik pierwszy dla każdej z liczb. Sprytna implementacja sita pozwoliła
+na osiągnięcie gwarancji że jest to najmniejszy dzielnik pierwszy, bez ograniczania prędkości sita. Następnie łatwo obliczyć największy dzielnik pierwszy - przechodząc dynamicznie tablicę od najmniejszych liczb, możemy obliczyć:
+$$ MaxPrimeDivisor[n] = max(MinPrimeDivisor[n], MaxPrimeDivisor[n/MinPrimeDivisor[n]]). $$
+
+W następnym etapie korzystając z obliczonej tablicy największych dzielników obliczałem $\bar{\gamma}_1, \ldots \bar{\gamma}_K$. Warto zauważyć, że wszystkie dzielniki pierwsze $n$, wraz z krotnościami, uporządkowane od największego, to:
+$$ p_1 = MaxPrimeDivisor[n] $$
+$$ p_2 = MaxPrimeDivisor[n/p_1] $$
+$$ p_3 = MaxPrimeDivisor[n/p_2] $$
+$$ \ldots $$
+W ten sposób dla każdej liczby obliczałem wszystkie dzielniki i odpowiednie wyrażenia $\log(p_i)/\log(n)$ i dodawałem je do akumulatorów.
+
+\section*{Optymalizacje}
+
+W pierwszej części zoptymalizowałem zużycie pamięci rezygnując z pamiętania całej tabeli dla sita - zamiast tego, trzymałem tylko dzielniki dla liczb względnie pierwszych z $15 = gcd(2, 3, 5)$,
+a dla pozostałych obliczałem je na bieżąco - dzieląc przez $2, 3, 5$. Pozwoliło to na zużycie $15 / phi(15) \simeq 4$ razy mniej pamięci. Dla przyspieszenia poprzez zwiększenie lokalności odwołań do pamięci
+użyłem sita segmentowanego, według http://primesieve.org/segmented\_sieve.html. \\
+
+W drugiej części istotną część kosztu stanowiło obliczanie logarytmów. Z tego powodu wpierw stablicowałem wartości logarytmów liczb pierwszych mniejszych od $10^9$.
+Jako że jest ich tylko około $5\cdot 10^7$ nie stanowiło to dużego narzutu pamięciowego. Do ich przechowywania istotnie lepiej zadziałała mapa boost::container::flat\_map niż std::map.
+Ponadto, zmodyfikowałem wewnętrzną pętle by nie obliczała $\log(n)$ dla każdego $p_i$, a tylko jednokrotnie. Oczekiwałem że kompilator sam to zrobi w ramach optymalizacji wspólnych podwyrażeń, ale się przeliczyłem.
 
 \chapter*{Wyniki}
 
