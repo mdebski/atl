@@ -41,8 +41,8 @@ int main(int argc, char* argv[]) {
     breaks.insert(c);
     c*=10;
   }
-  for(int i=1;i<10;++i) {
-    breaks.insert((static_cast<unsigned long long>(n)*i)/10);
+  for(int i=1;i<20;++i) {
+    breaks.insert((static_cast<unsigned long long>(n)*i)/20);
   }
   breaks.insert(n);
 
