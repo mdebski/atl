@@ -14,12 +14,12 @@
 \usepackage{wasysym}
 \usepackage{graphicx}
 \usepackage[hmarginratio=1:1]{geometry}
-\graphicspath{{.}}
+\graphicspath{{plots/}}
 
-%\addtolength{\voffset}{-2cm}
-%\addtolength{\textheight}{+4cm}
-%\addtolength{\hoffset}{-3.5cm}
-%\addtolength{\textwidth}{+7cm}
+\addtolength{\voffset}{-1cm}
+\addtolength{\textheight}{+2cm}
+\addtolength{\hoffset}{-1cm}
+\addtolength{\textwidth}{+2cm}
 
 \newcommand{\bc}{\begin{cases}}
 \newcommand{\ec}{\end{cases}}
@@ -134,5 +134,15 @@ Jako że jest ich tylko około $5\cdot 10^7$ nie stanowiło to dużego narzutu p
 Ponadto, zmodyfikowałem wewnętrzną pętle by nie obliczała $\log(n)$ dla każdego $p_i$, a tylko jednokrotnie. Oczekiwałem że kompilator sam to zrobi w ramach optymalizacji wspólnych podwyrażeń, ale się przeliczyłem.
 
 \chapter*{Wyniki}
+
+\section*{Szacowanie $\bar{\gamma_i}$}
+
+\begin{center} \includegraphics[width=0.75 \linewidth]{0} \end{center}
+\begin{center} \includegraphics[width=0.75 \linewidth]{1} \end{center}
+
+\section*{Zależności pomiędzy $\bar{\gamma_i}$}
+
+\begin{center} \includegraphics[width=0.75 \linewidth]{2} \end{center}
+\begin{center} \includegraphics[width=1 \linewidth]{3} \end{center}
 
 \end{document}
