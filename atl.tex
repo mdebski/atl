@@ -100,7 +100,7 @@ Oczywiście, po zlogarytmowaniu stronami otrzymujemy
 Zdefiniujmy teraz badane średnie. Niech $\gamma_i(n), i \in \set{1, \ldots, K}$ oznacza odpowiednią wartość z rozkładu $n$, jak powyżej. Dla ustalonego $N$, przyjmijmy
 $$ \bar{\gamma}_i = \frac{1}{N} \sum_{n=1}^{N} \gamma_i(n). $$
 Obliczenia wskazują, że dla każdego $i$, ciąg $\bar{\gamma}_i$ jest zbieżny dla $N \to \infty$. Ponadto, suma tych ciągów wydaje się szybko zbiegać do $1$,
-co jest odpowiednikiem równości (\ref{sum}) dla średnych.
+co jest odpowiednikiem równości (\ref{sum}) dla średnich.
 
 \chapter*{Metoda obliczeń}
 
@@ -158,13 +158,13 @@ Celem oszacowania tempa zbieżności, przedstawiłem na poniższym wykresie stos
 \begin{center} \includegraphics[width=0.75 \linewidth]{1} \end{center}
 
 Wygląda na to, że zbieżność zachodzi dosyć szybko, różnice pomiędzy obliczonymi wartościami dla $10^9$ i $9\cdot 10^8$ są rzędu $10^{-5}$.
-Interesującym wydaje się fakt, że obliczenia wskazują iż zbieżność jest monotoniczna, ale w różnych kierunkach w zależności od $i$. Nie udało mi się znaleść regularności w tym zachowaniu.
+Interesującym wydaje się fakt, że obliczenia wskazują iż zbieżność jest monotoniczna, ale w różnych kierunkach w zależności od $i$. Nie udało mi się znaleźć regularności w tym zachowaniu.
 
 \section*{Zależności pomiędzy $\bar{\gamma_i}$}
 
 Ciekawsze wyniki można uzyskać badając zależności pomiędzy tymi wartościami. Po pierwsze, zgodnie z oczekiwaniem, także po uśrednieniu, suma wartości $\gamma_i$ dąży do jedynki.
 Poniższy wykres przedstawia różnicę pomiędzy $\bar{\gamma_1}(n) + \ldots + \bar{\gamma_K}(n)$ a jedynką, na skalach logarytmicznych. Widać, że błąd jest rzędu $1/n$.
-Nieregularności na końcu wykresu wynikają najprawdobodobniej z niewystarczającej dokładności użytego typu zmiennoprzecinkowego \texttt{double}.
+Nieregularności na końcu wykresu wynikają najprawdopodobniej z niewystarczającej dokładności użytego typu zmiennoprzecinkowego \texttt{double}.
 
 \begin{center} \includegraphics[width=0.75 \linewidth]{2} \end{center}
 
