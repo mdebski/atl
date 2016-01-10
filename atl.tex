@@ -137,12 +137,47 @@ Ponadto, zmodyfikowałem wewnętrzną pętle by nie obliczała $\log(n)$ dla ka�
 
 \section*{Szacowanie $\bar{\gamma_i}$}
 
+Najpierw przedstawię wyniki dotyczące poszczególnych $\bar{\gamma}_i$. Jak widać na poniższym wykresie dla kilku pierwszych $i$, wartości te zbiegają do stałych.
+
 \begin{center} \includegraphics[width=0.75 \linewidth]{0} \end{center}
+
+Dla $N=10^9$ przybliżone wartości kilku pierwszych $\bar{\gamma}$ przedstawione są w poniższej tabeli.
+
+$$
+\begin{array}{cc}
+    \bar{\gamma_1} & 0.64214 \\
+    \bar{\gamma_2} & 0.20846 \\
+    \bar{\gamma_3} & 0.08150 \\
+    \bar{\gamma_4} & 0.03534 \\
+    \bar{\gamma_5} & 0.16639
+\end{array}
+$$
+
+Celem oszacowania tempa zbieżności, przedstawiłem na poniższym wykresie stosunek $\bar{\gamma}_i(n) / \bar{\gamma}_i(N)$.
+
 \begin{center} \includegraphics[width=0.75 \linewidth]{1} \end{center}
+
+Wygląda na to, że zbieżność zachodzi dosyć szybko, różnice pomiędzy obliczonymi wartościami dla $10^9$ i $9\cdot 10^8$ są rzędu $10^{-5}$.
+Interesującym wydaje się fakt, że obliczenia wskazują iż zbieżność jest monotoniczna, ale w różnych kierunkach w zależności od $i$. Nie udało mi się znaleść regularności w tym zachowaniu.
 
 \section*{Zależności pomiędzy $\bar{\gamma_i}$}
 
+Ciekawsze wyniki można uzyskać badając zależności pomiędzy tymi wartościami. Po pierwsze, zgodnie z oczekiwaniem, także po uśrednieniu, suma wartości $\gamma_i$ dąży do jedynki.
+Poniższy wykres przedstawia różnicę pomiędzy $\bar{\gamma_1}(n) + \ldots + \bar{\gamma_K}(n)$ a jedynką, na skalach logarytmicznych. Widać, że błąd jest rzędu $1/n$.
+Nieregularności na końcu wykresu wynikają najprawdobodobniej z niewystarczającej dokładności użytego typu zmiennoprzecinkowego \texttt{double}.
+
 \begin{center} \includegraphics[width=0.75 \linewidth]{2} \end{center}
+
+Zbadałem także jak eksperymentalna wartość granicy $\bar{\gamma}_i$ zależy od $i$. Wykres po lewej pokazuje dokładnie tę zależność,
+a wykres po prawej pokazuje ją z logarytmiczną skalą $y$.
+
 \begin{center} \includegraphics[width=1 \linewidth]{3} \end{center}
+
+Na drugim wykresie punkty ewidentnie układają się wzdłuż prostej. Odchylenie na końcu wykresu wynika prawdopodobnie z niedostatecznej dokładności oszacowania -
+niewiele liczb z analizowanego wykresu ma ponad $25$ dzielników pierwszych, więc dalsze $\bar{\gamma}_i$ mogą być niedoszacowane. Przedstawiona na rysunku prosta,
+dopasowana do punktów od $1$ do $24$, ma równanie
+$$ y = -0.327418 x + -0.059270, $$
+co odpowiada zależności
+$$ \bar{\gamma}(i) = 10^{-0.327418 i - 0.059270} \simeq 0.87 \cdot 0.47^i. $$
 
 \end{document}
